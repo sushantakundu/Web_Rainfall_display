@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Rainfall Map Display</title>
-    <meta http-equiv="refresh" content="300"> <!-- Refresh every 5 minutes -->
+
+    <!-- Refresh every 5 minutes -->
+    <meta http-equiv="refresh" content="300">
+
     <style>
         body {
             margin: 0;
@@ -12,14 +15,78 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
         }
+
         img {
             max-width: 100%;
             max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* 🔁 Minimal Switch Icon */
+        #switchIcon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: #222;
+            border: 2px solid #00eaff;
+            color: #00eaff;
+            font-size: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px #00eaff;
+            opacity: 1;
+            transition: opacity 0.5s ease-out, transform 0.2s ease;
+            z-index: 9999;
+        }
+
+        #switchIcon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #00eaff;
         }
     </style>
 </head>
+
 <body>
-    <img src="https://www.dropbox.com/scl/fi/5g9rdxoju3lup0sxldihm/present_rainfall_plot_NE.png?rlkey=3sqyvyc2my0dezm5ynu5xunfp&raw=1" alt="Rainfall Map">
+
+    <!-- 🔁 Page Switch Icon -->
+    <button id="switchIcon" onclick="goToGSMaP()">🔁</button>
+
+    <!-- Rainfall Map Image -->
+    <img src="https://www.dropbox.com/scl/fi/5g9rdxoju3lup0sxldihm/present_rainfall_plot_NE.png?rlkey=3sqyvyc2my0dezm5ynu5xunfp&raw=1"
+         alt="Rainfall Map">
+
+    <script>
+        // ===============================
+        // 🔁 Switch Back to GSMaP Page
+        // ===============================
+        function goToGSMaP() {
+            window.location.href = "https://sushantakundu.github.io/gsmap-live/";
+        }
+
+        // ===============================
+        // Auto-hide switch icon after 5s
+        // ===============================
+        let switchIcon = document.getElementById("switchIcon");
+        let hideTimeout;
+
+        function resetHideTimer() {
+            switchIcon.style.opacity = 1;
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => {
+                switchIcon.style.opacity = 0;
+            }, 5000);
+        }
+
+        document.onmousemove = resetHideTimer;
+        document.ontouchstart = resetHideTimer;
+
+        resetHideTimer();
+    </script>
+
 </body>
 </html>
