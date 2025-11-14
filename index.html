@@ -19,7 +19,7 @@
             font-family: Arial, sans-serif;
         }
 
-        /* Map Image (same fade-in style as GSMap page) */
+        /* Map Image with fade-in */
         #rainImg {
             max-width: 100%;
             max-height: 100%;
@@ -70,7 +70,7 @@
 
 <body>
 
-    <!-- 🔁 Page Switch Icon -->
+    <!-- 🔁 Switch to GSMaP Live -->
     <button id="switchIcon" onclick="goToGSMaP()">🔁</button>
 
     <!-- Live Clock -->
@@ -78,8 +78,8 @@
 
     <!-- Rainfall Map Image -->
     <img id="rainImg"
-         src="https://www.dropbox.com/scl/fi/5g9rdxoju3lup0sxldihm/present_rainfall_plot_NE.png?rlkey=3sqyvyc2my0dezm5ynu5xunfp&raw=1"
-         alt="Rainfall Map">
+        src="https://www.dropbox.com/scl/fi/5g9rdxoju3lup0sxldihm/present_rainfall_plot_NE.png?rlkey=3sqyvyc2my0dezm5ynu5xunfp&raw=1&cb=1"
+        alt="Rainfall Map">
 
     <script>
         // ===============================
@@ -94,7 +94,7 @@
         setTimeout(autoFullscreen, 1000);
 
         // ===============================
-        // Auto-Hide Buttons & Clock
+        // Auto-Hide Switch Icon & Clock
         // ===============================
         let switchIcon = document.getElementById("switchIcon");
         let clock = document.getElementById("clock");
@@ -123,13 +123,16 @@
         }
 
         // ===============================
-        // Auto-Retry Image Loading + Fade-In
+        // Image Loader with Retry + Fade
         // ===============================
         let img = document.getElementById("rainImg");
 
         function loadImage() {
             img.style.opacity = 0;
-            img.src = "https://www.dropbox.com/scl/fi/5g9rdxoju3lup0sxldihm/present_rainfall_plot_NE.png?raw=1&cb=" + Date.now();
+
+            img.src =
+                "https://www.dropbox.com/scl/fi/5g9rdxoju3lup0sxldihm/present_rainfall_plot_NE.png" +
+                "?rlkey=3sqyvyc2my0dezm5ynu5xunfp&raw=1&cb=" + Date.now();
 
             img.onload = () => {
                 img.style.opacity = 1;
@@ -141,8 +144,11 @@
             };
         }
 
+        // Initial load
         loadImage();
-        setInterval(loadImage, 300000); // Every 5 minutes
+
+        // Refresh every 5 minutes
+        setInterval(loadImage, 300000);
 
         // ===============================
         // Live Digital Clock
