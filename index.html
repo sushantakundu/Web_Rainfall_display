@@ -53,7 +53,7 @@
             box-shadow: 0 0 15px #00eaff;
         }
 
-        /* Live clock */
+        /* Live clock (top-right) */
         #clock {
             position: fixed;
             top: 10px;
@@ -61,6 +61,18 @@
             color: #00eaff;
             font-size: 24px;
             letter-spacing: 1px;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+            z-index: 9999;
+        }
+
+        /* Auto-refresh countdown (bottom-left) */
+        #refreshTimer {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            color: #00eaff;
+            font-size: 20px;
             opacity: 1;
             transition: opacity 0.5s ease-out;
             z-index: 9999;
@@ -73,8 +85,11 @@
     <!-- 🔁 Switch to GSMaP Live -->
     <button id="switchIcon" onclick="goToGSMaP()">🔁</button>
 
-    <!-- Live Clock -->
+    <!-- Live Clock (top-right) -->
     <div id="clock"></div>
+
+    <!-- Auto-refresh countdown (bottom-left) -->
+    <div id="refreshTimer"></div>
 
     <!-- Rainfall Map Image -->
     <img id="rainImg"
@@ -94,20 +109,23 @@
         setTimeout(autoFullscreen, 1000);
 
         // ===============================
-        // Auto-Hide Switch Icon & Clock
+        // Auto-Hide Switch Icon, Clock, Timer
         // ===============================
         let switchIcon = document.getElementById("switchIcon");
         let clock = document.getElementById("clock");
+        let refreshTimer = document.getElementById("refreshTimer");
         let hideTimeout;
 
         function resetHideTimer() {
             switchIcon.style.opacity = 1;
             clock.style.opacity = 1;
+            refreshTimer.style.opacity = 1;
 
             clearTimeout(hideTimeout);
             hideTimeout = setTimeout(() => {
                 switchIcon.style.opacity = 0;
                 clock.style.opacity = 0;
+                refreshTimer.style.opacity = 0;
             }, 5000);
         }
 
@@ -144,11 +162,8 @@
             };
         }
 
-        // Initial load
         loadImage();
-
-        // Refresh every 5 minutes
-        setInterval(loadImage, 300000);
+        setInterval(loadImage, 300000); // 5 minutes
 
         // ===============================
         // Live Digital Clock
@@ -165,6 +180,28 @@
 
         setInterval(updateClock, 1000);
         updateClock();
+
+        // ===============================
+        // Auto-Refresh Countdown Timer
+        // ===============================
+        let refreshSeconds = 300; // 5 minutes
+        function updateRefreshTimer() {
+            let mins = Math.floor(refreshSeconds / 60);
+            let secs = refreshSeconds % 60;
+
+            refreshTimer.textContent =
+                "Auto refresh in: " +
+                mins + ":" + (secs < 10 ? "0" + secs : secs);
+
+            refreshSeconds--;
+
+            if (refreshSeconds < 0) {
+                refreshSeconds = 300;
+            }
+        }
+
+        setInterval(updateRefreshTimer, 1000);
+        updateRefreshTimer();
     </script>
 
 </body>
